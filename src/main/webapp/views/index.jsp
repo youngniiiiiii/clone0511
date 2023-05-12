@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="EUC-KR" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -9,13 +9,11 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="/js/index0421.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <script src="/js/index0421.js"></script>
-
     <%--카카오맵--%>
     <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=da86c8457c75372952796f5bbc52cb25"></script>
-
     <%--HighChart--%>
     <script src="https://code.highcharts.com/highcharts.js"></script>
     <script src="https://code.highcharts.com/modules/series-label.js"></script>
@@ -24,30 +22,64 @@
     <script src="https://code.highcharts.com/modules/accessibility.js"></script>
     <script src="https://code.highcharts.com/highcharts-3d.js"></script>
     <script src="https://code.highcharts.com/modules/data.js"></script>
-
     <style>
+        <%--navbar--%>
+        .logo {
+            font-size: 30px;
+            color: white;
+            text-decoration: none;
+        }
+        a.logo:hover {
+            color: white;
+            text-decoration: none;
+            border-color:white;
+        }
         .navbar {
-            margin-bottom: 0;
+            margin: 0;
             border-radius: 0;
             height: 80px;
             font-size: 20px;
-            padding-top: 20px;
+            padding-top: 15px;
         }
-
+        .navbar-form navbar-left{
+            margin: 5px 0px;
+        }
+        .navbar-category {
+            font-weight: bolder;
+            padding: 15px;
+        }
+        <%--loginbar--%>
+        #login_btn {
+            width: 150px;
+            height: 30px;
+            border-radius: 0;
+            font-size: 12px;
+            background-color: white;
+            vertical-align: middle;
+            margin-right: 20px;
+        }
+        #login_btn:hover {
+            color: white;
+            background-color: #222222;
+        }
+        #login_btn p {
+            margin: auto;
+            padding: 5px 0px;
+        }
+        .loginbar-category {
+            padding: 0px 8px;
+        }
+        .loginbar-category a {
+            font-size: 12px;
+            color: #222222;
+            font-weight: bold;
+        }
         .row.content {height: 800px}
-
-        .sidenav {
-            padding-top: 20px;
-            /*background-color: #f1f1f1;*/
-            height: 100%;
-        }
-
         footer {
             background-color: #555;
             color: white;
             padding: 15px;
         }
-
         /* On small screens, set height to 'auto' for sidenav and grid */
         @media screen and (max-width: 767px) {
             .sidenav {
@@ -56,63 +88,93 @@
             }
             .row.content {height:auto;}
         }
+
+        #scroll-btn {
+            font-family: 'Nanum Gothic', sans-serif;
+            opacity: 0;
+            width: 65px;
+            height: 65px;
+            color: dimgray;
+            background-color: white;
+            position: fixed;
+            bottom: 13%;
+            right: 10%;
+            border: 1px solid lightgrey;
+            font: bold 15px monospace;
+            transition: opacity 2s, transform 2s;
+        }
+        #scroll-btn.show {
+            opacity: 1;
+            transition: opacity 5s, transform 5s;
+        }
+        #scroll-btn2 {
+            font-family: 'Nanum Gothic', sans-serif;
+            opacity: 0;
+            width: 65px;
+            height: 65px;
+            color: dimgray;
+            background-color: white;
+            position: fixed;
+            bottom: 5%;
+            right: 10%;
+            border: 1px solid lightgrey;
+            font: bold 15px monospace;
+            transition: opacity 2s, transform 2s;
+        }
+        #scroll-btn2.show {
+            opacity: 1;
+            transition: opacity 5s, transform 5s;
+        }
+        #scroll-btn:hover {
+            color: white;
+            background-color: #222222;
+        }
+
+        #scroll-btn2:hover {
+            color: white;
+            background-color: #222222;
+        }
     </style>
 </head>
 <body>
-
 <%--navbar--%>
 <nav class="navbar navbar-inverse">
     <div class="container-fluid">
         <div class="navbar-header">
-            <a style="font-size: 30px; color: white" href="#">MOSINSA</a>
+            <div style="margin: 4px 0px;">
+                <a class="logo" href="/">MOSINSA</a>
+            </div>
         </div>
-
         <form class="navbar-form navbar-left" action="">
             <div class="input-group">
-                <input type="text" class="form-control" placeholder="티셔츠 페스티벌 최대 80% 할인" name="search" style="font-size: 12px; width: 250px">
+                <input type="text" class="form-control" placeholder="티셔츠 페스티벌 최대 80% 할인" name="search" style="border-radius: 0; width:250px; font-size: 12px; height: 28px">
                 <div class="input-group-btn">
-                    <button class="btn btn-default" type="submit">
-                        <i class="glyphicon glyphicon-search"></i>
-                    </button>
+                    <a href="#" class="btn btn-dark" style="background-color: #222222; padding: 3px; margin: auto; width: 28px; height: 28px; border-color: gray; border-radius: 0">
+                        <span class="glyphicon glyphicon-search" style="color: lightgrey"></span>
+                    </a>
                 </div>
             </div>
         </form>
-
-        <ul class="nav navbar-nav navbar-right">
-            <li><a href="#" style="color: #00d47B">상의</a></li>
-            <li><a href="#" style="color: #ED00EC">하의</a></li>
-            <li><a href="#">신발</a></li>
+        <ul class="nav navbar-nav navbar-right" style="padding-right: 20px">
+            <li><a href="#" class="navbar-category" style="color: #00D47B">상의</a></li>
+            <li><a href="#" class="navbar-category" style="color: #ED00EC">하의</a></li>
+            <li><a href="#" class="navbar-category" style="color: #FFFFFF">신발</a></li>
             <li></li>
         </ul>
     </div>
 </nav>
-<nav style="height: 50px;padding-top:10px; padding-left:10px">
-    <div style="width:150px; border-style:solid; border-color:black; text-align: center">
-        <a href="#" role="button">로그인</a>
-    </div>
-<%--    <ul class="nav navbar-nav navbar-left">--%>
-<%--        <li><a href="#">바로접속 ON</a></li>--%>
-<%--        <li><a href="#">마이페이지</a></li>--%>
-<%--        <li><a href="#">장바구니</a></li>--%>
-<%--        <!--<li><a href="#">고객센터</a></li>-->--%>
-<%--        <li>고객센터</li>--%>
-<%--    </ul>--%>
-
-</nav>
-
-
+<div style="height:50px; padding:10px; border-bottom:1px solid lightgrey">
+    <button type="button" id="login_btn" onclick="location.href='/login'"><p>로그인</p></button>
+    <span class="loginbar-category" ><a href="#" style="color: #00A3FF; font-weight: bold">바로접속 ON</a></span>
+    <span class="loginbar-category"><a href="/custinfo">마이페이지</a></span>
+    <span class="loginbar-category"><a href="/cart">장바구니</a></span>
+    <span class="loginbar-category"><a href="#">고객센터</a></span>
+    <span class="loginbar-category"><a href="/register" style="color: #048EFF">회원 가입 EVENT. 신규 가입 후 바로 사용 가능한 15% 할인 쿠폰 / 모신사 스탠다드 990원 구매 기회</a></span>
+</div>
 <div class="container-fluid text-center">
     <div class="row content">
-
         <%--left menu center--%>
-        <c:choose>
-            <c:when test="${left == null}">
-                <jsp:include page="left.jsp"/>
-            </c:when>
-            <c:otherwise>
-                <jsp:include page="${left}.jsp"/>
-            </c:otherwise>
-        </c:choose> <%--left menu end--%>
+            <jsp:include page="left.jsp"/>
 
         <%--center--%>
         <c:choose>
@@ -122,14 +184,38 @@
             <c:otherwise>
                 <jsp:include page="${center}.jsp"/>
             </c:otherwise>
-        </c:choose> <%--center end--%>
-
+        </c:choose>
+            <%--center end--%>
     </div> <%--row content end--%>
 </div><%--container end--%>
-
 <footer class="container-fluid text-center">
     <p>Footer Text</p>
 </footer>
-
 </body>
 </html>
+<script>
+    let chatbtn = {
+        init:function(){
+            const scrollBtn = document.createElement("button");
+            scrollBtn.innerHTML = "챗봇";
+            scrollBtn.setAttribute("id", "scroll-btn");
+            document.body.appendChild(scrollBtn);
+            scrollBtn.classList.add("show");
+            scrollBtn.addEventListener("click", function(){
+                location.href='/login';
+            });
+            const scrollBtn2 = document.createElement("button");
+            scrollBtn2.innerHTML = "1:1 상담";
+            scrollBtn2.setAttribute("id", "scroll-btn2");
+            document.body.appendChild(scrollBtn2);
+            scrollBtn2.classList.add("show");
+            scrollBtn2.addEventListener("click", function(){
+                location.href='/login';
+            });
+        }
+    };
+
+    $(function(){
+        chatbtn.init();
+    });
+</script>
